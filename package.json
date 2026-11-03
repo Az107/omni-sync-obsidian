@@ -1,0 +1,31 @@
+{
+  "name": "omni-sync-obsidian",
+  "version": "0.1.0",
+  "description": "Sync an Obsidian vault with an omni-sync server",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "npm run typecheck && node esbuild.config.mjs production",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "keywords": [
+    "obsidian",
+    "sync",
+    "omni-sync"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^9.0.0",
+    "obsidian": "^1.14.4",
+    "prettier": "^3.0.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^5.1.0"
+  }
+}

@@ -1,0 +1,116 @@
+/* omni-sync — deliberately small: Obsidian's own chrome carries the layout. */
+
+.omni-status-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.35rem;
+  border-radius: 50%;
+  background: var(--text-muted);
+  vertical-align: middle;
+}
+.omni-status-dot.is-ok {
+  background: var(--color-green);
+}
+.omni-status-dot.is-busy {
+  background: var(--color-yellow);
+}
+.omni-status-dot.is-error {
+  background: var(--color-red);
+}
+
+.omni-modal-note {
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  margin-bottom: 1rem;
+}
+
+.omni-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.omni-policy-list {
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+  margin: 0.25rem 0 0.75rem;
+  padding-left: 1.1rem;
+}
+
+.omni-policy-editor {
+  width: 100%;
+  margin-bottom: 0.6rem;
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+  resize: vertical;
+}
+
+/* ---- history + conflicts ------------------------------------------------- */
+
+.omni-history,
+.omni-overwrites {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.omni-version,
+.omni-conflict {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  padding: 0.55rem 0.7rem;
+}
+
+.omni-version {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.omni-version.is-active {
+  background: var(--background-secondary);
+}
+
+.omni-version-main {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.omni-version-id {
+  font-family: var(--font-monospace);
+  font-weight: 600;
+}
+
+.omni-version-meta {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.omni-badge {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 999px;
+  padding: 0.05rem 0.45rem;
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.omni-conflict-path {
+  font-family: var(--font-monospace);
+  margin-bottom: 0.3rem;
+  overflow-wrap: anywhere;
+}
+
+.omni-conflict-detail {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.omni-conflict-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+}

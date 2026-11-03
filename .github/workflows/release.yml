@@ -1,0 +1,79 @@
+name: release
+
+on:
+  push:
+    tags: ["obsidian-v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: tag to release, for example obsidian-v0.2.0
+        required: true
+        type: string
+
+jobs:
+  release:
+    name: build and publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: install
+        run: npm ci
+
+      - name: build
+        run: npm run build
+
+      # The tag is the release identity: Obsidian, BRAT and the community
+      # browser read the version from manifest.json, so a tag that disagrees
+      # would publish a release nobody can match to a version.
+      - name: verify tag against manifest.json
+        id: version
+        env:
+          requested_tag: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+        run: |
+          set -euo pipefail
+          tag="$requested_tag"
+          case "$tag" in
+            obsidian-v*) ;;
+            *)
+              echo "::error::tag '$tag' must look like obsidian-v<version>"
+              exit 1
+              ;;
+          esac
+          version="${tag#obsidian-v}"
+          manifest_version="$(node -p 'require("./manifest.json").version")"
+          if [ -z "$version" ]; then
+            echo "::error::tag '$tag' has no version after obsidian-v"
+            exit 1
+          fi
+          if [ "$version" != "$manifest_version" ]; then
+            echo "::error::tag '$tag' does not match manifest.json version '$manifest_version'"
+            exit 1
+          fi
+          if [ ! -f main.js ]; then
+            echo "::error::the build did not produce main.js"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "releasing $version"
+
+      # The three files Obsidian installs: the bundle, the manifest it reads
+      # the version from, and the stylesheet.
+      - name: publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: obsidian-v${{ steps.version.outputs.version }}
+          name: omni-sync ${{ steps.version.outputs.version }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            main.js
+            manifest.json
+            styles.css

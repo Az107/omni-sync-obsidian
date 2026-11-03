@@ -1,0 +1,9 @@
+{
+  "id": "omni-sync",
+  "name": "omni-sync",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Sync this vault with an omni-sync server: versions, conflict review, desktop and mobile.",
+  "author": "omni-sync",
+  "isDesktopOnly": false
+}
