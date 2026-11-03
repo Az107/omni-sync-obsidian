@@ -195,6 +195,22 @@ describe.skipIf(!enabled)("live server interop", () => {
     const pushed = await pusherA.push(null);
     expect(pushed.uploaded).toBe(2);
 
+    // The SSE stream works through CORS and sends the current head immediately.
+    const streamController = new AbortController();
+    const streamedHead = new Promise<number>((resolve) => {
+      void api
+        .streamOps(folder.id, streamController.signal, (head) => resolve(head))
+        .catch(() => {});
+    });
+    const headValue = await Promise.race([
+      streamedHead,
+      new Promise<number>((_, reject) =>
+        setTimeout(() => reject(new Error("no head within 5s")), 5_000),
+      ),
+    ]);
+    streamController.abort();
+    expect(headValue).toBeGreaterThan(0);
+
     // A new vault is seeded from the head + manifest, not by replaying the log.
     const bootstrapped = await pullerB.bootstrap();
     expect(bootstrapped).toBe(true);
